@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Task_Web_Application.Models.TaskHistory>
+
+@{
+    ViewData["Title"] = "History";
+    Layout = "~/Views/Shared/_AdminHomepage.cshtml";
+}
+
+<div class="table-card">
+    <div class="table-card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">Task History</h6>
+
+        <form asp-action="ClearHistory" method="post">
+            <button class="btn-clear-history"
+                    onclick="return confirm('This will permanently delete all history. Continue?')">
+                <i class="bi bi-trash3 me-2"></i>
+                Clear History
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>TaskId</th>
+                <th>Action</th>
+                <th>Changed By</th>
+                <th>Changed At</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.TaskId</td>
+                        <td>@item.Action</td>
+                        <td>@item.ChangedBy</td>
+                        <td>@item.ChangedAt.ToString("dd MMM yyyy HH:mm")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                        No history yet.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

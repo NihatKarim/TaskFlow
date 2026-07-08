@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Task_Web_Application.Models.TaskItem>
+
+@{
+    ViewData["Title"] = "My Tasks";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created By</th>
+            <th>Assigned To</th>
+            <th>Created Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.CreatedBy</td>
+                <td>@item.AssignedTo</td>
+                <td>@item.CreatedDate.ToShortDateString()</td>
+
+                <td>
+                    @if (item.Status == "Completed")
+                    {
+                        <span class="badge bg-success">Completed</span>
+                    }
+                    else if (item.Status == "InProgress")
+                    {
+                        <span class="badge bg-primary">In Progress</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    }
+                </td>
+
+                <td>
+                    @if (item.Status != "Completed")
+                    {
+                        <form asp-action="UpdateStatus" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-success btn-sm">
+                                Update Status
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

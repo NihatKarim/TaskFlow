@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Task_Web_Application.Models.TaskItem>
+
+@{
+    ViewData["Title"] = "My Tasks";
+    Layout = "~/Views/Shared/_UserHomepage.cshtml";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h4 class="mb-0">My Tasks</h4>
+
+    <a href="@Url.Action("Create", "Task")" class="btn btn-success">
+        + Create Task
+    </a>
+
+</div>
+
+@if (TempData["StatusChanged"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        @TempData["StatusChanged"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<table class="table align-middle">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created By</th>
+            <th>Assigned To</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>@item.CreatedBy</td>
+                    <td>@item.AssignedTo</td>
+                    <td>@item.CreatedDate.ToString("dd MMM yyyy")</td>
+
+                    <!-- STATUS -->
+                    <td>
+                        <span class="badge @(item.Status == "Completed" ? "bg-success" : item.Status == "InProgress" ? "bg-primary" : "bg-warning text-dark")">
+                            @item.Status
+                        </span>
+                    </td>
+
+                    <!-- ACTION -->
+                    <td>
+                        @{
+                            var currentUser = (ViewBag.Username as string)?.Trim();
+                            var taskOwner = (item.AssignedTo ?? "").Trim();
+
+                            var isOwner = !string.IsNullOrEmpty(currentUser) &&
+                            string.Equals(currentUser, taskOwner, StringComparison.OrdinalIgnoreCase);
+                        }
+
+                        @if (isOwner)
+                        {
+                            <form asp-controller="Data"
+                                  asp-action="UpdateStatus"
+                                  method="post"
+                                  style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-sm @(item.Status == "Completed" ? "btn-outline-secondary" : "btn-success")">
+                                    @(item.Status == "Completed" ? "Undo" : "Mark Completed")
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">&mdash;</span>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center text-muted py-4">
+                    No tasks assigned yet.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

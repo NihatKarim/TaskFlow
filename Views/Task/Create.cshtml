@@ -1,0 +1,19 @@
+﻿@model Task_Web_Application.Models.TaskItem
+
+<form method="post">
+
+    <div class="mb-3">
+        <label>Title</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Create Task
+    </button>
+
+</form> 

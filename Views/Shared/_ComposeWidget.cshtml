@@ -1,0 +1,66 @@
+﻿@model Task_Web_Application.Models.TaskItem
+
+<div class="compose-overlay" id="composeOverlay" onclick="closeCompose()"></div>
+
+<div class="compose-widget" id="composeWidget">
+
+    <!-- Header -->
+    <div class="compose-header" onclick="toggleMinimise()">
+        <span class="compose-header-title">New Task</span>
+        <div class="compose-header-actions" onclick="event.stopPropagation()">
+            <button type="button" onclick="toggleMinimise()"><i class="bi bi-dash-lg"></i></button>
+            <button type="button" onclick="toggleExpand()"><i class="bi bi-arrows-angle-expand"></i></button>
+            <button type="button" onclick="closeCompose()"><i class="bi bi-x-lg"></i></button>
+        </div>
+    </div>
+
+    <form asp-controller="Data" asp-action="AddTask" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="compose-body">
+
+            <!-- Title -->
+            <div class="compose-field">
+                <label>Title</label>
+                <input asp-for="Title" type="text" placeholder="Task title" />
+            </div>
+
+            <!-- Assigned To -->
+            <div class="compose-field">
+                <label>Assign To</label>
+                <input asp-for="AssignedTo" type="text" placeholder="Assign user (optional)" />
+            </div>
+
+            <!-- Description -->
+            <div class="compose-field">
+                <label>Description</label>
+                <textarea asp-for="Description"
+                          class="compose-textarea"
+                          placeholder="Write task details..."></textarea>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="compose-footer">
+
+            <div class="compose-footer-left">
+
+                <div class="compose-date-field">
+                    <label>Status</label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button class="btn-send" type="submit">
+                Send <i class="bi bi-send"></i>
+            </button>
+
+        </div>
+    </form>
+</div>

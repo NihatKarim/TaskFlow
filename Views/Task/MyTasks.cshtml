@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Task_Web_Application.Models.TaskItem>
+
+@{
+    ViewData["Title"] = "My Tasks";
+    Layout = "~/Views/Shared/_UserHomepage.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+
+
+        <button type="button" class="btn btn-secondary" onclick="goBack()">
+            ← Back
+        </button>
+
+        <script>
+            function goBack() {
+                if (document.referrer !== "") {
+                    window.history.back();
+                } else {
+                    window.location.href = '/Data/AdminHomepage';
+                }
+            }
+        </script>
+
+    </div>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created By</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Id</td>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>@item.CreatedBy</td>
+                    <td>@item.CreatedDate.ToString("dd.MM.yyyy")</td>
+
+                    <td>
+                        @if (item.Status == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                        else if (item.Status == "InProgress")
+                        {
+                            <span class="badge bg-primary">In Progress</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Completed</span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (item.Status != "Completed")
+                        {
+                            <form asp-action="CompleteTask" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button class="btn btn-success btn-sm">
+                                    Complete
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">—</span>
+                        }
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7" class="text-center">
+                    No tasks assigned.
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+</div>
