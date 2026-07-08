@@ -1,129 +1,124 @@
-# TaskFlow - Task Management System
+# TaskFlow
 
-TaskFlow is a modern task management web application developed with ASP.NET Core MVC and SQL Server. The system enables users to manage tasks efficiently while providing administrators with tools to monitor users and task activity.
+A modern **Task Management System** built with **ASP.NET Core MVC**, **Entity Framework Core**, and **SQL Server**. The application enables users to create, manage, and track tasks while providing administrators with comprehensive task and user management features.
 
-## 🚀 Features
+---
 
-### User Authentication
+## Features
 
-* User registration
-* Secure login and logout
-* Session-based authentication
-* Account management
+### User
+- User registration and login
+- Session-based authentication
+- Create, edit, and delete tasks
+- View personal tasks
+- Track task history
+- Manage assigned tasks
 
-### Task Management
+### Admin
+- View all users
+- Delete user accounts
+- View all tasks
+- Create tasks
+- Delete any task
+- Monitor system activity
 
-* Create tasks
-* Edit tasks
-* Delete tasks
-* View personal tasks
-* Task assignment
-* Task status management
-* Task history tracking
+---
 
-### User Dashboard
+## Tech Stack
 
-* Personal task overview
-* Assigned task management
-* Task progress tracking
+- ASP.NET Core 8 MVC
+- C#
+- Entity Framework Core
+- SQL Server
+- Razor Views
+- HTML5
+- CSS3
+- JavaScript
 
-### Admin Dashboard
+---
 
-* View all users
-* Delete user accounts
-* View all tasks
-* Create tasks
-* Delete any task
-* Monitor overall system activity
+## Getting Started
 
-## 🛠 Tech Stack
+### Requirements
 
-* **Framework:** ASP.NET Core 8 MVC
-* **Language:** C#
-* **Database:** SQL Server
-* **ORM:** Entity Framework Core
-* **Frontend:** Razor Views, HTML, CSS, JavaScript
-* **Architecture:** MVC (Model–View–Controller)
+- .NET 8 SDK
+- SQL Server
+- Visual Studio 2022
 
-## ⚙️ Configuration
-
-### Prerequisites
-
-* .NET 8 SDK
-* SQL Server
-* Visual Studio 2022
-
-### Setup
-
-1. Clone the repository
+### Installation
 
 ```bash
 git clone https://github.com/NihatKarim/TaskFlow.git
 cd TaskFlow
 ```
 
-2. Configure your connection string in `appsettings.json`
+Configure your SQL Server connection string inside **appsettings.json**.
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "YOUR_SQL_SERVER_CONNECTION_STRING"
+    "DefaultConnection": "YOUR_CONNECTION_STRING"
   }
 }
 ```
 
-3. Restore NuGet packages
+Run the following commands:
 
 ```bash
 dotnet restore
-```
-
-4. Apply database migrations
-
-```bash
 dotnet ef database update
-```
-
-5. Run the application
-
-```bash
 dotnet run
 ```
 
-## 📂 Project Structure
+---
 
-* Models
-* Views
-* Controllers
-* Data
-* Migrations
-* wwwroot
+## Project Structure
 
-## 🔐 Security
+```
+TaskFlow
+│
+├── Controllers
+├── Data
+├── Migrations
+├── Models
+├── Views
+├── wwwroot
+├── Program.cs
+└── appsettings.json
+```
 
-* Session-based authentication
-* HTTP-only cookies
-* Authentication timeout
-* HTTPS support
+---
 
-## 📈 Future Improvements
+## Security
 
-* Email verification
-* Task notifications
-* File attachments
-* Search and filtering
-* Dashboard analytics
-* Role-based permissions enhancement
+- Session-based authentication
+- HTTP-only cookies
+- HTTPS support
 
-## 👨‍💻 Author
+---
+
+## Future Improvements
+
+- Email verification
+- Notifications
+- File attachments
+- Advanced filtering and search
+- Dashboard analytics
+- Role-based authorization improvements
+
+---
+
+## Author
 
 **Nihat Karimi**
 
-Computer Engineering Graduate
+Computer Engineering Graduate  
 National Aviation Academy
 
 GitHub: https://github.com/NihatKarim
 
-## 📄 License
+---
 
-This project was developed for educational purposes as a Final Graduation Project.
+## Project Status
+
+✅ Completed as a Final Graduation Project.
