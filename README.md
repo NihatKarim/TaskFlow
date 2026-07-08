@@ -1,144 +1,129 @@
-# TaskFlow - Task Web Application
+# TaskFlow - Task Management System
 
-A modern, full-featured task management web application built with ASP.NET Core and SQL Server. TaskFlow provides user authentication, task management, and admin dashboard capabilities for efficient task organization and tracking.
+TaskFlow is a modern task management web application developed with ASP.NET Core MVC and SQL Server. The system enables users to manage tasks efficiently while providing administrators with tools to monitor users and task activity.
 
 ## 🚀 Features
 
-- **User Authentication**
-  - User registration with email validation
-  - Secure login system
-  - Password reset functionality
-  - Account deletion option
+### User Authentication
 
-- **Task Management**
-  - Create, read, update, and delete tasks
-  - Task history tracking
-  - Task categorization and organization
-  - Real-time task status updates
+* User registration
+* Secure login and logout
+* Session-based authentication
+* Account management
 
-- **User Dashboard**
-  - Personal task overview
-  - Task analytics and statistics
-  - User profile management
-  - Session-based user tracking
+### Task Management
 
-- **Admin Dashboard**
-  - System-wide task monitoring
-  - User management
-  - Account oversight
-  - Administrative controls
+* Create tasks
+* Edit tasks
+* Delete tasks
+* View personal tasks
+* Task assignment
+* Task status management
+* Task history tracking
 
-- **Security Features**
-  - Session-based authentication (30-minute timeout)
-  - HTTP-only cookies for enhanced security
-  - Essential cookies enabled
-  - HTTPS redirection in production
+### User Dashboard
 
-## 📋 Tech Stack
+* Personal task overview
+* Assigned task management
+* Task progress tracking
 
-- **Framework:** ASP.NET Core 8.0
-- **Language:** C#
-- **Database:** SQL Server
-- **ORM:** Entity Framework Core 9.0.12
-- **Frontend:** HTML/CSS/JavaScript (Razor Views)
-- **Architecture:** MVC (Model-View-Controller)
+### Admin Dashboard
+
+* View all users
+* Delete user accounts
+* View all tasks
+* Create tasks
+* Delete any task
+* Monitor overall system activity
+
+## 🛠 Tech Stack
+
+* **Framework:** ASP.NET Core 8 MVC
+* **Language:** C#
+* **Database:** SQL Server
+* **ORM:** Entity Framework Core
+* **Frontend:** Razor Views, HTML, CSS, JavaScript
+* **Architecture:** MVC (Model–View–Controller)
 
 ## ⚙️ Configuration
 
-### Session Settings
-- **IdleTimeout:** 30 minutes
-- **HttpOnly:** Enabled (prevents JavaScript access)
-- **IsEssential:** True (required for functionality)
-
-### NuGet Dependencies
-- `Microsoft.EntityFrameworkCore.Relational` v9.0.12
-- `Microsoft.EntityFrameworkCore.SqlServer` v9.0.12
-- `Microsoft.EntityFrameworkCore.Tools` v9.0.12
-- `Microsoft.VisualStudio.Web.CodeGeneration.Design` v8.0.23
-
-## 🔧 Installation & Setup
-
 ### Prerequisites
-- .NET 8.0 SDK or later
-- SQL Server 2019 or later
-- Visual Studio 2022 or VS Code
 
-### Steps
+* .NET 8 SDK
+* SQL Server
+* Visual Studio 2022
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Rajnarayanan28/TaskFlow.git
-   cd TaskFlow/Task_Web_Application
-   ```
+### Setup
 
-2. **Update appsettings.json**
-   ```json
-   {
-     "ConnectionStrings": {
-       "DefaultConnection": "Your-SQL-Server-Connection-String"
-     }
-   }
-   ```
+1. Clone the repository
 
-3. **Restore NuGet packages**
-   ```bash
-   dotnet restore
-   ```
+```bash
+git clone https://github.com/NihatKarim/TaskFlow.git
+cd TaskFlow
+```
 
-4. **Run database migrations**
-   ```bash
-   dotnet ef database update
-   ```
+2. Configure your connection string in `appsettings.json`
 
-5. **Build the project**
-   ```bash
-   dotnet build
-   ```
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "YOUR_SQL_SERVER_CONNECTION_STRING"
+  }
+}
+```
 
-6. **Run the application**
-   ```bash
-   dotnet run
-   ```
+3. Restore NuGet packages
 
-The application will start at `https://localhost:5001` and automatically redirect to the Login page.
+```bash
+dotnet restore
+```
 
-## 📱 Usage
+4. Apply database migrations
 
-### For Users
-1. Navigate to the application URL
-2. Register a new account or login with existing credentials
-3. Access your dashboard to create and manage tasks
-4. Track task history and view completed tasks
-5. Manage your profile and account settings
+```bash
+dotnet ef database update
+```
 
-### For Administrators
-1. Login with admin credentials
-2. Access the Admin Dashboard from the sidebar
-3. Monitor all system tasks and users
-4. Manage user accounts and system settings
+5. Run the application
 
+```bash
+dotnet run
+```
 
-## 🔄 Development Workflow
+## 📂 Project Structure
 
-The project includes:
-- Database migrations for schema versioning
-- Development-specific configuration
-- Error handling and logging
-- Session management middleware
+* Models
+* Views
+* Controllers
+* Data
+* Migrations
+* wwwroot
+
+## 🔐 Security
+
+* Session-based authentication
+* HTTP-only cookies
+* Authentication timeout
+* HTTPS support
+
+## 📈 Future Improvements
+
+* Email verification
+* Task notifications
+* File attachments
+* Search and filtering
+* Dashboard analytics
+* Role-based permissions enhancement
+
+## 👨‍💻 Author
+
+**Nihat Karimi**
+
+Computer Engineering Graduate
+National Aviation Academy
+
+GitHub: https://github.com/NihatKarim
 
 ## 📄 License
 
-This project is part of the TaskFlow repository by Rajnarayanan28.
-
-## 👤 Author
-
-**Rajnarayanan28** - [GitHub Profile](https://github.com/Rajnarayanan28)
-
-## 📧 Support
-
-For issues, feature requests, or questions, please open an issue on the GitHub repository.
-
-***
-
-**Framework Version:** .NET 8.0
-**Entity Framework Core:** 9.0.12
+This project was developed for educational purposes as a Final Graduation Project.
