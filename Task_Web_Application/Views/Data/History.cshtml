@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_AdminHomepage.cshtml";
 }
 
-
 <div class="table-card">
     <div class="table-card-header d-flex justify-content-between align-items-center">
         <h6 class="mb-0">Task History</h6>
@@ -18,11 +17,6 @@
             </button>
         </form>
     </div>
-
-    <div class="table-responsive">
-        <table class="table align-middle">
-        </table>
-    </div>
 </div>
 
 <div class="table-responsive">
@@ -30,13 +24,10 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Subject</th>
-                <th>Task</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Archived On</th>
+                <th>TaskId</th>
+                <th>Action</th>
+                <th>Changed By</th>
+                <th>Changed At</th>
             </tr>
         </thead>
 
@@ -47,20 +38,17 @@
                 {
                     <tr>
                         <td>@item.Id</td>
-                        <td>@item.From</td>
-                        <td>@item.To</td>
-                        <td>@item.Sub</td>
-                        <td>@item.Task</td>
-                        <td>@item.Start?.ToString("dd MMM yyyy")</td>
-                        <td>@item.End?.ToString("dd MMM yyyy")</td>
-                        <td>@item.ArchivedOn.ToString("dd MMM yyyy HH:mm")</td>
+                        <td>@item.TaskId</td>
+                        <td>@item.Action</td>
+                        <td>@item.ChangedBy</td>
+                        <td>@item.ChangedAt.ToString("dd MMM yyyy HH:mm")</td>
                     </tr>
                 }
             }
             else
             {
                 <tr>
-                    <td colspan="8" class="text-center text-muted py-4">
+                    <td colspan="5" class="text-center text-muted py-4">
                         No history yet.
                     </td>
                 </tr>

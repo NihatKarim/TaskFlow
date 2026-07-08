@@ -1,4 +1,4 @@
-﻿@model Task_Web_Application.Models.TaskModel
+﻿@model Task_Web_Application.Models.TaskItem
 
 <div class="compose-overlay" id="composeOverlay" onclick="closeCompose()"></div>
 
@@ -6,7 +6,7 @@
 
     <!-- Header -->
     <div class="compose-header" onclick="toggleMinimise()">
-        <span class="compose-header-title">New Message</span>
+        <span class="compose-header-title">New Task</span>
         <div class="compose-header-actions" onclick="event.stopPropagation()">
             <button type="button" onclick="toggleMinimise()"><i class="bi bi-dash-lg"></i></button>
             <button type="button" onclick="toggleExpand()"><i class="bi bi-arrows-angle-expand"></i></button>
@@ -19,22 +19,25 @@
 
         <div class="compose-body">
 
-            <!-- To -->
+            <!-- Title -->
             <div class="compose-field">
-                <label>To</label>
-                <input asp-for="To" type="text" placeholder="Recipients" />
+                <label>Title</label>
+                <input asp-for="Title" type="text" placeholder="Task title" />
             </div>
 
-            <!-- Subject -->
+            <!-- Assigned To -->
             <div class="compose-field">
-                <label>Sub</label>
-                <input asp-for="Sub" type="text" placeholder="Subject" />
+                <label>Assign To</label>
+                <input asp-for="AssignedTo" type="text" placeholder="Assign user (optional)" />
             </div>
 
-            <!-- Message -->
-            <textarea asp-for="Task"
-                      class="compose-textarea"
-                      placeholder="Write your message..."></textarea>
+            <!-- Description -->
+            <div class="compose-field">
+                <label>Description</label>
+                <textarea asp-for="Description"
+                          class="compose-textarea"
+                          placeholder="Write task details..."></textarea>
+            </div>
 
         </div>
 
@@ -44,13 +47,12 @@
             <div class="compose-footer-left">
 
                 <div class="compose-date-field">
-                    <label>Start</label>
-                    <input type="date" asp-for="Start" />
-                </div>
-
-                <div class="compose-date-field">
-                    <label>End</label>
-                    <input type="date" asp-for="End" />
+                    <label>Status</label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
                 </div>
 
             </div>

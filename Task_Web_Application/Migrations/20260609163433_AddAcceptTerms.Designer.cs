@@ -12,15 +12,15 @@ using Task_Web_Application.Data;
 namespace Task_Web_Application.Migrations
 {
     [DbContext(typeof(AppDatabase))]
-    [Migration("20260218050320_adding task table")]
-    partial class addingtasktable
+    [Migration("20260609163433_AddAcceptTerms")]
+    partial class AddAcceptTerms
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.12")
+                .HasAnnotation("ProductVersion", "8.0.23")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -32,6 +32,9 @@ namespace Task_Web_Application.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<bool>("AcceptTerms")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("Dob")
                         .HasColumnType("datetime2");
@@ -57,6 +60,44 @@ namespace Task_Web_Application.Migrations
                     b.ToTable("registerModels");
                 });
 
+            modelBuilder.Entity("Task_Web_Application.Models.TaskHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ArchivedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("End")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("From")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Sub")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Task")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("To")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskHistories");
+                });
+
             modelBuilder.Entity("Task_Web_Application.Models.TaskModel", b =>
                 {
                     b.Property<int>("ID")
@@ -67,6 +108,10 @@ namespace Task_Web_Application.Migrations
 
                     b.Property<DateTime>("End")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("From")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Task_Web_Application.Data;
 using Task_Web_Application.Models;
 
 namespace Task_Web_Application.Controllers
@@ -7,9 +8,9 @@ namespace Task_Web_Application.Controllers
     {
         public AppDatabase _db;
 
-        public DataController()
+        public DataController(AppDatabase db)
         {
-            _db = new AppDatabase();
+            _db = db;
         }
 
         // ================= REGISTER =================
@@ -23,15 +24,37 @@ namespace Task_Web_Application.Controllers
         [HttpPost]
         public IActionResult Register(RegisterModel obj)
         {
-            if (ModelState.IsValid)
+            if (!obj.AcceptTerms)
             {
-                _db.registerModels.Add(obj);
-                _db.SaveChanges();
-                return RedirectToAction("Login");
+                ModelState.AddModelError("AcceptTerms",
+                    "You must accept the Terms & Conditions");
             }
 
-            return View(obj);
+            if (!ModelState.IsValid)
+            {
+                return View(obj);
+            }
+
+            bool emailExists = _db.registerModels
+                .Any(x => x.Email.ToLower() == obj.Email.ToLower());
+
+            if (emailExists)
+            {
+                ModelState.AddModelError(
+                    "Email",
+                    "This email is already registered."
+                );
+
+                return View(obj);
+            }
+
+            _db.registerModels.Add(obj);
+
+            _db.SaveChanges();
+
+            return RedirectToAction("Login");
         }
+
 
         // ================= LOGIN =================
 
@@ -61,6 +84,9 @@ namespace Task_Web_Application.Controllers
 
                     if (user.Type == "user")
                         return RedirectToAction("UserHomepage");
+
+                    if (user.Type == "worker")
+                        return RedirectToAction("WorkerHomepage");
                 }
 
                 ViewBag.Error = "Invalid Email or Password";
@@ -80,17 +106,18 @@ namespace Task_Web_Application.Controllers
 
             string adminUsername = HttpContext.Session.GetString("Username");
 
-            var tasks = _db.addTask
-                           .Where(x => x.From == adminUsername)
+            var tasks = _db.Tasks
+                           .Where(x => x.CreatedBy == adminUsername)
                            .ToList();
 
             int totalTasks = tasks.Count;
-            int completed = tasks.Count(x => x.Status == true);
-            int pending = tasks.Count(x => x.Status == false);
+            int completed = tasks.Count(x => x.Status == "Completed");
+            int pending = tasks.Count(x => x.Status == "Pending");
             int totalUsers = _db.registerModels.Count(x => x.Type == "user");
 
-            double completionRate = totalTasks == 0 ? 0 :
-                (double)completed / totalTasks * 100;
+            double completionRate = totalTasks == 0
+                ? 0
+                : (double)completed / totalTasks * 100;
 
             var model = new AdminDashboardViewModel
             {
@@ -131,33 +158,34 @@ namespace Task_Web_Application.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddTask(TaskModel obj)
+        public IActionResult AddTask(TaskItem obj)
         {
             string type = HttpContext.Session.GetString("UserType");
 
             if (type != "admin")
                 return RedirectToAction("Login");
 
-            var verify = _db.registerModels
-                            .Any(x => x.Username == obj.To && x.Type == "user");
+            obj.CreatedBy = HttpContext.Session.GetString("Username");
+            obj.CreatedByEmail = HttpContext.Session.GetString("UserEmail");
+            obj.CreatedDate = DateTime.Now;
+            obj.Status = "Pending";
 
-            if (verify)
-            {
-                // ✅ AUTO SET FROM (ADMIN USERNAME)
-                obj.From = HttpContext.Session.GetString("Username");
+            _db.Tasks.Add(obj);
+            _db.SaveChanges();
 
-                // ✅ DEFAULT STATUS = PENDING
-                obj.Status = false;
-
-                _db.addTask.Add(obj);
-                _db.SaveChanges();
-
-                return RedirectToAction("AdminHomepage");
-            }
-
-            return BadRequest("Invalid recipient.");
+            return RedirectToAction("AdminHomepage");
         }
 
+        // ================= WORKER HOMEPAGE =================
+        public IActionResult WorkerHomepage()
+        {
+            string type = HttpContext.Session.GetString("UserType");
+
+            if (type != "worker")
+                return RedirectToAction("Login");
+
+            return View();
+        }
         // ================= VIEW TASK =================
 
         public IActionResult ViewTask()
@@ -172,15 +200,15 @@ namespace Task_Web_Application.Controllers
 
             if (type == "admin")
             {
-                return View(_db.addTask.ToList());
+                return View(_db.Tasks.ToList());
             }
 
             if (type == "user")
             {
                 string username = HttpContext.Session.GetString("Username");
 
-                var userTasks = _db.addTask
-                                   .Where(x => x.To == username)
+                var userTasks = _db.Tasks
+                                   .Where(x => x.AssignedTo == username)
                                    .ToList();
 
                 return View(userTasks);
@@ -198,25 +226,20 @@ namespace Task_Web_Application.Controllers
             var username = HttpContext.Session.GetString("Username");
 
             if (string.IsNullOrEmpty(username))
-                return RedirectToAction("Login", "Data");
+                return RedirectToAction("Login");
 
-            var task = _db.addTask.FirstOrDefault(x => x.ID == id);
+            var task = _db.Tasks.FirstOrDefault(x => x.Id == id);
 
             if (task == null)
                 return NotFound();
 
-            // Only allow user to update THEIR OWN task (case-insensitive)
-            var taskOwner = task.To?.Trim() ?? string.Empty;
-            var currentUser = username?.Trim() ?? string.Empty;
-
-            if (!string.Equals(taskOwner, currentUser, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(task.AssignedTo?.Trim(), username.Trim(),
+                StringComparison.OrdinalIgnoreCase))
                 return RedirectToAction("ViewTask");
 
-            // Toggle status so user can mark completed or undo
-            task.Status = !task.Status;
-            _db.SaveChanges();
+            task.Status = task.Status == "Completed" ? "Pending" : "Completed";
 
-            TempData["StatusChanged"] = $"Task {id} status is now {(task.Status ? "Completed" : "Pending")}.";
+            _db.SaveChanges();
 
             return RedirectToAction("ViewTask");
         }
@@ -225,17 +248,17 @@ namespace Task_Web_Application.Controllers
 
         public IActionResult CompletedTasks()
         {
-            string type = HttpContext.Session.GetString("UserType");
+            var type = HttpContext.Session.GetString("UserType");
 
             if (type != "admin")
                 return RedirectToAction("Login");
 
-            string adminUsername = HttpContext.Session.GetString("Username");
+            var adminUsername = HttpContext.Session.GetString("Username");
 
-            var completedTasks = _db.addTask
-                                    .Where(x => x.Status == true &&
-                                                x.From == adminUsername)
-                                    .ToList();
+            var completedTasks = _db.Tasks
+                .Where(x => x.Status == "Completed" &&
+                            x.CreatedBy == adminUsername)
+                .ToList();
 
             return View(completedTasks);
         }
@@ -250,27 +273,26 @@ namespace Task_Web_Application.Controllers
 
             string adminUsername = HttpContext.Session.GetString("Username");
 
-            var task = _db.addTask
-                          .FirstOrDefault(x => x.ID == id &&
-                                               x.From == adminUsername &&
-                                               x.Status == true);
+            var task = _db.Tasks
+                          .FirstOrDefault(x => x.Id == id &&
+                                               x.CreatedBy == adminUsername &&
+                                               x.Status == "Completed");
 
             if (task == null)
                 return Unauthorized();
 
             var history = new TaskHistory
             {
-                From = task.From,
-                To = task.To,
-                Sub = task.Sub,
-                Task = task.Task,
-                Start = task.Start,
-                End = task.End,
-                ArchivedOn = DateTime.Now
+                TaskId = task.Id,
+                Action = "Approved",
+                ChangedBy = adminUsername,
+                ChangedAt = DateTime.Now
             };
 
             _db.TaskHistories.Add(history);
-            _db.addTask.Remove(task);
+
+            _db.Tasks.Remove(task);
+
             _db.SaveChanges();
 
             return RedirectToAction("CompletedTasks");
@@ -285,12 +307,13 @@ namespace Task_Web_Application.Controllers
             string adminUsername = HttpContext.Session.GetString("Username");
 
             var history = _db.TaskHistories
-                             .Where(x => x.From == adminUsername)
-                             .OrderByDescending(x => x.ArchivedOn)
+                             .Where(x => x.ChangedBy == adminUsername)
+                             .OrderByDescending(x => x.ChangedAt)
                              .ToList();
 
             return View(history);
         }
+
         [HttpPost]
         public IActionResult ClearHistory()
         {
@@ -302,7 +325,7 @@ namespace Task_Web_Application.Controllers
             string adminUsername = HttpContext.Session.GetString("Username");
 
             var history = _db.TaskHistories
-                             .Where(x => x.From == adminUsername)
+                             .Where(x => x.ChangedBy == adminUsername)
                              .ToList();
 
             _db.TaskHistories.RemoveRange(history);

@@ -4,14 +4,12 @@
     {
         public int Id { get; set; }
 
-        public string From { get; set; }
-        public string To { get; set; }
-        public string Sub { get; set; }
-        public string Task { get; set; }
+        public int TaskId { get; set; }
 
-        public DateTime? Start { get; set; }
-        public DateTime? End { get; set; }
+        public string Action { get; set; } // Created / Updated / Deleted
 
-        public DateTime ArchivedOn { get; set; }
+        public string ChangedBy { get; set; }
+
+        public DateTime ChangedAt { get; set; } = DateTime.Now;
     }
 }

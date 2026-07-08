@@ -1,8 +1,239 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<style>
+    
+    .hero {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    .hero-text {
+        color: #6b7280;
+        font-size: 1.1rem;
+        margin-top: 20px;
+    }
+
+    .gradient-text {
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .feature-card {
+        border: none;
+        border-radius: 20px;
+        transition: .3s;
+        height: 100%;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+        }
+
+    .stat-card {
+        border-radius: 20px;
+        padding: 30px;
+        background: white;
+        box-shadow: 0 10px 30px rgba(0,0,0,.05);
+    }
+
+    .cta-box {
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        color: white;
+        border-radius: 25px;
+        padding: 60px;
+    }
+</style>
+
+<section class="hero">
+
+    
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <h1 class="hero-title">
+                    Manage Tasks
+                    <span class="gradient-text">
+                        Smarter
+                    </span>
+                </h1>
+
+                <p class="hero-text">
+                    A modern task management platform built with ASP.NET Core MVC,
+                    Web API, Onion Architecture and JWT Authentication.
+                </p>
+
+                <div class="mt-4">
+
+                    <a asp-controller="Data"
+                       asp-action="Register"
+                       class="btn btn-primary btn-lg me-2">
+                        Get Started
+                    </a>
+
+                    <a asp-controller="Data"
+                       asp-action="Login"
+                       class="btn btn-outline-primary btn-lg">
+                        Login
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 text-center">
+
+                <img src="https://cdn-icons-png.flaticon.com/512/4727/4727496.png"
+                     class="img-fluid"
+                     style="max-height:420px">
+
+            </div>
+
+        </div>
+
+    </div>
+    
+
+</section>
+
+<section class="py-5">
+
+    
+    <div class="container">
+
+        <h2 class="text-center fw-bold mb-5">
+            Features
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card feature-card shadow-sm">
+                    <div class="card-body text-center">
+                        <h4>Task Tracking</h4>
+                        <p>Create and manage tasks efficiently.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card shadow-sm">
+                    <div class="card-body text-center">
+                        <h4>User Roles</h4>
+                        <p>Admin and User based authorization.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card shadow-sm">
+                    <div class="card-body text-center">
+                        <h4>Secure Access</h4>
+                        <p>JWT based authentication system.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    
+
+</section>
+
+<section class="py-5 bg-light">
+
+    
+    <div class="container">
+
+        <div class="row text-center">
+
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <h2>5000+</h2>
+                    <p>Tasks</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <h2>250+</h2>
+                    <p>Users</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <h2>99%</h2>
+                    <p>Success</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <h2>50+</h2>
+                    <p>Projects</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    
+
+</section>
+
+<section class="py-5">
+
+    
+    <div class="container text-center">
+
+        <h2 class="fw-bold mb-4">
+            About This Project
+        </h2>
+
+        <p class="lead">
+            This application was developed as a final project using
+            ASP.NET Core MVC, ASP.NET Web API, Entity Framework Core,
+            Onion Architecture and JWT Authentication.
+        </p>
+
+    </div>
+   
+
+</section>
+
+<section class="container py-5">
+
+    <div class="cta-box text-center">
+
+        <h2 class="fw-bold">
+            Ready To Boost Your Productivity?
+        </h2>
+
+        <p class="mt-3">
+            Join TaskFlow and start managing your tasks effectively.
+        </p>
+
+        <a asp-controller="Data"
+           asp-action="Register"
+           class="btn btn-light btn-lg mt-3">
+            Create Account
+        </a>
+
+    </div>
+   
+
+</section>

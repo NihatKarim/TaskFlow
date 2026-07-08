@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+<style>
+    .about-hero {
+        padding: 80px 0;
+    }
+
+    .about-title {
+        font-size: 3rem;
+        font-weight: 800;
+    }
+
+    .gradient-text {
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .about-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.05);
+        transition: .3s;
+        height: 100%;
+    }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .section-title {
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container about-hero">
+
+    <div class="text-center mb-5">
+
+        <h1 class="about-title">
+            About <span class="gradient-text">TaskFlow</span>
+        </h1>
+
+        <p class="text-muted">
+            Modern Task Management System built for productivity and teamwork
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="about-card">
+                <h4 class="section-title">🚀 Project Goal</h4>
+                <p>
+                    TaskFlow is designed to help users organize tasks,
+                    improve productivity and manage daily work efficiently.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="about-card">
+                <h4 class="section-title">⚙️ Technologies</h4>
+                <p>
+                    ASP.NET Core MVC, Entity Framework Core,
+                    Onion Architecture, Bootstrap and JWT Authentication.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="about-card">
+                <h4 class="section-title">👨‍💻 Features</h4>
+                <p>
+                    Task creation, user roles, authentication,
+                    and scalable clean architecture.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</div>

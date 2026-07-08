@@ -1,8 +1,8 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@{
     var action = ViewContext.RouteData.Values["action"]?.ToString();
     var userType = Context.Session.GetString("UserType");
 
-    // Public pages
     if (action == "Login" || action == "Register")
     {
         Layout = "_Layout";

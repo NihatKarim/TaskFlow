@@ -686,54 +686,85 @@
 <body>
 
     <!-- ===== SIDEBAR ===== -->
-    <!-- ===== SIDEBAR ===== -->
     <nav class="sidebar">
+
         <div class="sidebar-brand">
             <h5>Task Admin</h5>
             <span>Management</span>
         </div>
 
+        <!-- DASHBOARD -->
         <a asp-controller="Data" asp-action="AdminHomepage"
            class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "AdminHomepage" ? "active" : "")">
             <i class="bi bi-speedometer2"></i>
             <span>Dashboard</span>
         </a>
 
+        <!-- COMPLETED -->
         <a asp-controller="Data" asp-action="CompletedTasks"
            class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "CompletedTasks" ? "active" : "")">
             <i class="bi bi-check-circle"></i>
             <span>Completed</span>
         </a>
 
+        <!-- HISTORY -->
         <a asp-controller="Data" asp-action="History"
            class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "History" ? "active" : "")">
             <i class="bi bi-clock-history"></i>
             <span>History</span>
         </a>
 
-        <!-- NEW SECTION -->
-        <!-- ACCOUNT SECTION -->
+        <div class="nav-section-label">Management</div>
+
+        <!-- ALL TASKS -->
+        <a asp-controller="Task" asp-action="Index"
+           class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")">
+            <i class="bi bi-list-task"></i>
+            <span>All Tasks</span>
+        </a>
+
+        <!-- CREATE TASK -->
+        <a asp-controller="Task" asp-action="Create"
+           class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Create" ? "active" : "")">
+            <i class="bi bi-plus-circle"></i>
+            <span>Create Task</span>
+        </a>
+
+        <div class="nav-section-label">Users</div>
+
+        <!-- USERS -->
+        <a asp-controller="Data" asp-action="Users"
+           class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Users" ? "active" : "")">
+            <i class="bi bi-people"></i>
+            <span>Manage Users</span>
+        </a>
+
         <div class="nav-section-label">Account</div>
 
+        <!-- CHANGE PASSWORD -->
         <a asp-controller="Account" asp-action="ChangePassword"
            class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "ChangePassword" ? "active" : "")">
             <i class="bi bi-shield-lock"></i>
             <span>Change Password</span>
         </a>
 
+        <!-- DELETE ACCOUNT -->
         <a asp-controller="Account" asp-action="DeleteAccount"
            class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "DeleteAccount" ? "active" : "")">
             <i class="bi bi-trash"></i>
             <span>Delete Account</span>
         </a>
+
         <div class="sidebar-spacer"></div>
 
+        <!-- LOGOUT -->
         <div class="sidebar-logout">
             <a asp-controller="Data" asp-action="Logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Logout</span>
             </a>
         </div>
+
     </nav>
 
     <!-- ===== MAIN ===== -->
@@ -756,14 +787,12 @@
         <!-- Content -->
         <div class="content">
 
-            <!-- Stat Cards -->
-            
-            <!-- Table -->
             <div class="table-card">
                 <div class="table-card-header">
                     <h6>Recent Activity</h6>
                     <span>Showing latest records</span>
                 </div>
+
                 <div class="table-responsive">
                     @RenderBody()
                 </div>
@@ -773,7 +802,7 @@
     </div>
 
     <!-- ===== COMPOSE WIDGET ===== -->
-    @await Html.PartialAsync("_ComposeWidget", new Task_Web_Application.Models.TaskModel())
+    @await Html.PartialAsync("_ComposeWidget", new Task_Web_Application.Models.TaskItem())
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>

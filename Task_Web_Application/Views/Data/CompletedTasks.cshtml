@@ -1,23 +1,20 @@
-﻿@model IEnumerable<Task_Web_Application.Models.TaskModel>
+﻿@model IEnumerable<Task_Web_Application.Models.TaskItem>
 
 @{
     ViewData["Title"] = "Completed Tasks";
     Layout = "~/Views/Shared/_AdminHomepage.cshtml";
 }
 
-
-
 <div class="table-responsive">
     <table class="table align-middle">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Subject</th>
-                <th>Task</th>
-                <th>Start</th>
-                <th>End</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created By</th>
+                <th>Assigned To</th>
+                <th>Created Date</th>
                 <th>Status</th>
                 <th>Approve</th>
             </tr>
@@ -26,29 +23,31 @@
         <tbody>
             @if (Model != null && Model.Any())
             {
-                @foreach (var item in Model)
+                foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.ID</td>
-                        <td>@item.From</td>
-                        <td>@item.To</td>
-                        <td>@item.Sub</td>
-                        <td>@item.Task</td>
-                        <td>@item.Start.ToString("dd MMM yyyy")</td>
-                        <td>@item.End.ToString("dd MMM yyyy")</td>
+                        <td>@item.Id</td>
+                        <td>@item.Title</td>
+                        <td>@item.Description</td>
+                        <td>@item.CreatedBy</td>
+                        <td>@item.AssignedTo</td>
+                        <td>@item.CreatedDate.ToString("dd MMM yyyy")</td>
 
                         <td>
-                            <span class="badge bg-success">Completed</span>
+                            <span class="badge bg-success">
+                                @item.Status
+                            </span>
                         </td>
 
-                        <!-- ✅ APPROVE BUTTON -->
+                        <!-- APPROVE -->
                         <td>
                             <form asp-action="ApproveTask"
                                   asp-controller="Data"
                                   method="post"
                                   style="display:inline;">
 
-                                <input type="hidden" name="id" value="@item.ID" />
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.Id" />
 
                                 <button type="submit"
                                         class="btn btn-sm btn-success">
@@ -62,7 +61,7 @@
             else
             {
                 <tr>
-                    <td colspan="9" class="text-center text-muted py-4">
+                    <td colspan="8" class="text-center text-muted py-4">
                         No completed tasks yet.
                     </td>
                 </tr>

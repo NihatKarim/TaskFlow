@@ -7,27 +7,103 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Task_Web_Application.styles.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Task_Web_Application</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg custom-navbar">
+
+            <div class="container">
+
+                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/app.png"
+                         alt="TaskFlow"
+                         width="32"
+                         height="32"
+                         class="me-2" />
+
+                    TaskFlow
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarContent">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="navbarContent">
+
+                    @{
+                        var userType = Context.Session.GetString("UserType");
+                        var username = Context.Session.GetString("Username");
+                    }
+                    <ul class="navbar-nav mx-auto">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                Home
+                            </a>
                         </li>
+
+                        @if (!string.IsNullOrEmpty(userType))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Task" asp-action="Index">
+                                    Tasks
+                                </a>
+                            </li>
+                        }
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="About">
+                                About
+                            </a>
                         </li>
+
                     </ul>
+
+                    <div class="d-flex gap-2">
+
+                        @if (string.IsNullOrEmpty(userType))
+                        {
+                            <a asp-controller="Data"
+                               asp-action="Login"
+                               class="btn btn-outline-primary">
+                                Login
+                            </a>
+
+                            <a asp-controller="Data"
+                               asp-action="Register"
+                               class="btn btn-primary">
+                                Register
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-dark me-2">
+                                Hello, @username
+                            </span>
+
+                            <!-- 🔥 BONUS BURADA -->
+                            <span class="badge bg-success me-2">
+                                @userType
+                            </span>
+
+                            <a asp-controller="Data"
+                               asp-action="Logout"
+                               class="btn btn-danger">
+                                Logout
+                            </a>
+                        }
+
+                    </div>
+
                 </div>
+
             </div>
+
         </nav>
     </header>
     <div class="container">
@@ -38,7 +114,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2026 - Task_Web_Application - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2026 - TaskFlow - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

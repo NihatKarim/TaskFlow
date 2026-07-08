@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Task_Web_Application.Data;
 using Task_Web_Application.Models;
 
 namespace Task_Web_Application.Controllers
@@ -7,9 +8,9 @@ namespace Task_Web_Application.Controllers
     {
         private readonly AppDatabase _db;
 
-        public AccountController()
+        public AccountController(AppDatabase db)
         {
-            _db = new AppDatabase();
+            _db = db;
         }
         [HttpGet]
         public IActionResult ChangePassword()
@@ -69,26 +70,31 @@ namespace Task_Web_Application.Controllers
             if (user == null)
                 return RedirectToAction("Login", "Data");
 
-            // 🔐 Verify password
             if (user.Password != password)
             {
                 ViewBag.Error = "Incorrect password.";
                 return View();
             }
 
-            // 🗑 Delete related tasks (important!)
-            var tasks = _db.addTask.Where(x => x.From == username || x.To == username).ToList();
-            _db.addTask.RemoveRange(tasks);
+            // 🧹 NEW TASK MODEL CLEANUP
+            var tasks = _db.Tasks
+                .Where(x => x.CreatedBy == username || x.AssignedTo == username)
+                .ToList();
 
-            var history = _db.TaskHistories.Where(x => x.From == username).ToList();
+            _db.Tasks.RemoveRange(tasks);
+
+            // 🧹 HISTORY CLEANUP (updated field assumption)
+            var history = _db.TaskHistories
+                .Where(x => x.ChangedBy == username)
+                .ToList();
+
             _db.TaskHistories.RemoveRange(history);
 
             // 🗑 Delete user
             _db.registerModels.Remove(user);
 
-            _db.SaveChanges();
+            _db.SaveChanges();  
 
-            // 🚪 Logout
             HttpContext.Session.Clear();
 
             return RedirectToAction("Login", "Data");

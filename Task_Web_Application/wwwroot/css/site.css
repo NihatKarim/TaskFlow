@@ -18,5 +18,50 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: 'Inter', sans-serif;
 }
+
+.custom-navbar {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+    padding: 12px 0;
+}
+
+.navbar-brand {
+    color: #4f46e5 !important;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.nav-link {
+    color: #444 !important;
+    font-weight: 500;
+    margin: 0 8px;
+    transition: .3s;
+}
+
+    .nav-link:hover {
+        color: #4f46e5 !important;
+    }
+
+.btn-primary {
+    background: linear-gradient( 135deg, #4f46e5, #7c3aed );
+    border: none;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+    }
+
+.btn-outline-primary {
+    border-color: #4f46e5;
+    color: #4f46e5;
+}
+
+    .btn-outline-primary:hover {
+        background: #4f46e5;
+        border-color: #4f46e5;
+    }
